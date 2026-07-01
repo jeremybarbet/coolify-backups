@@ -1,0 +1,17 @@
+FROM debian:stable-slim
+
+RUN apt-get update && \
+    apt-get install -y curl ca-certificates bash rclone xz-utils && \
+    rm -rf /var/lib/apt/lists/* && \
+    # aptabase-clickhouse task
+    curl https://clickhouse.com/ | sh && mv ./clickhouse /usr/local/bin/clickhouse
+
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+
+# aptabase-clickhouse task
+COPY tasks/aptabase-clickhouse.sh /usr/local/bin/tasks/aptabase-clickhouse.sh
+
+RUN chmod +x /usr/local/bin/entrypoint.sh \
+    /usr/local/bin/tasks/aptabase-clickhouse.sh
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

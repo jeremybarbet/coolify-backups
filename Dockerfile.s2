@@ -1,0 +1,18 @@
+FROM debian:stable-slim
+
+RUN apt-get update && \
+    apt-get install -y curl ca-certificates bash rclone xz-utils && \
+    rm -rf /var/lib/apt/lists/* && \
+    # libsql task
+    curl -sSfL https://get.tur.so/install.sh | bash && \
+    ln -sf /root/.turso/turso /usr/local/bin/turso
+
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+
+# libsql task
+COPY tasks/libsql.sh /usr/local/bin/tasks/libsql.sh
+
+RUN chmod +x /usr/local/bin/entrypoint.sh \
+    /usr/local/bin/tasks/libsql.sh
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
