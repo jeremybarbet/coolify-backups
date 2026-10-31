@@ -1,8 +1,12 @@
 FROM debian:stable-slim
 
+ARG RCLONE_VERSION=1.75.2
+
 RUN apt-get update && \
-    apt-get install -y curl ca-certificates bash rclone xz-utils && \
+    apt-get install -y curl ca-certificates bash xz-utils && \
     rm -rf /var/lib/apt/lists/* && \
+    curl -fsSLo /tmp/rclone.deb "https://downloads.rclone.org/v${RCLONE_VERSION}/rclone-v${RCLONE_VERSION}-linux-$(dpkg --print-architecture).deb" && \
+    dpkg -i /tmp/rclone.deb && rm /tmp/rclone.deb && \
     # libsql task
     curl -sSfL https://get.tur.so/install.sh | bash && \
     ln -sf /root/.turso/turso /usr/local/bin/turso
