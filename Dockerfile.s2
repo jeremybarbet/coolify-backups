@@ -1,6 +1,6 @@
 FROM debian:stable-slim
 
-ARG RCLONE_VERSION=1.75.2
+ARG RCLONE_VERSION=1.76.0
 
 RUN apt-get update && \
     apt-get install -y curl ca-certificates bash xz-utils && \
